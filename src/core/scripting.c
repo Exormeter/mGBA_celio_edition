@@ -1027,12 +1027,15 @@ static uint64_t _mScriptCoreAdapterCurrentCycle(struct mScriptCoreAdapter* adapt
 }
 #endif
 
-static void _mScriptCoreAdapterSetSioMaster(struct mScriptCoreAdapter* adapter) {
-	adapter->sioMask.mask = 0x600B;
-}
-
-static void _mScriptCoreAdapterSetSioSlave(struct mScriptCoreAdapter* adapter) {
-	adapter->sioMask.mask = 0x601F;
+// static void _mScriptCoreAdapterSetSioMaster(struct mScriptCoreAdapter* adapter) {
+// 	adapter->sioMask.mask = 0x600B;
+// }
+//
+// static void _mScriptCoreAdapterSetSioSlave(struct mScriptCoreAdapter* adapter) {
+// 	adapter->sioMask.mask = 0x601F;
+// }
+static void _mScriptCoreAdapterSetSioMask(struct mScriptCoreAdapter* adapter, uint16_t mask) {
+	adapter->sioMask.mask = mask;
 }
 
 static void _mScriptCoreAdapterDeinit(struct mScriptCoreAdapter* adapter) {
@@ -1192,8 +1195,9 @@ mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, write8, _mScriptCoreAdapt
 mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, write16, _mScriptCoreAdapterWrite16, 2, U32, address, U16, value);
 mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, write32, _mScriptCoreAdapterWrite32, 2, U32, address, U32, value);
 
-mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, setSioMaster, _mScriptCoreAdapterSetSioMaster, 0);
-mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, setSioSlave, _mScriptCoreAdapterSetSioSlave, 0);
+// mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, setSioMaster, _mScriptCoreAdapterSetSioMaster, 0);
+// mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, setSioSlave, _mScriptCoreAdapterSetSioSlave, 0);
+mSCRIPT_DECLARE_STRUCT_VOID_METHOD(mScriptCoreAdapter, setSioMask, _mScriptCoreAdapterSetSioMask, 1, U16, mask);
 
 #ifdef ENABLE_DEBUGGERS
 mSCRIPT_DECLARE_STRUCT_METHOD(mScriptCoreAdapter, U64, currentCycle, _mScriptCoreAdapterCurrentCycle, 0);
@@ -1261,8 +1265,10 @@ mSCRIPT_DEFINE_STRUCT(mScriptCoreAdapter)
 	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, write8)
 	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, write16)
 	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, write32)
-	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, setSioSlave)
-	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, setSioMaster)
+	// mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, setSioSlave)
+	// mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, setSioMaster)
+	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, setSioMask)
+
 #ifdef ENABLE_DEBUGGERS
 	mSCRIPT_DEFINE_DOCSTRING("Get the current execution cycle")
 	mSCRIPT_DEFINE_STRUCT_METHOD(mScriptCoreAdapter, currentCycle)
